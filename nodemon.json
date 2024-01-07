@@ -1,0 +1,9 @@
+{
+  "verbose": false,
+  "watch": ["src"],
+  "ignore": ["**/*.spec.ts", "token", "node_modules"],
+  "execMap": {
+    "js": "node --harmony",
+    "ts": "ts-node -r sucrase/register"
+  }
+}
