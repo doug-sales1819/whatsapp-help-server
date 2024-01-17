@@ -1,17 +1,29 @@
 import 'dotenv/config'
 
 import { Server } from './server'
+import { Whatsapp } from './bot/whatsapp'
+import { logger } from './lib/winston'
 
-const PORT = Number(process.env.PORT)
+async function bootstrap({ env, port }: any) {
+  const whatsapp = new Whatsapp({
+    session: 'whatsapp-bot',
+    headless: 'new',
+    devtools: false,
+    debug: env === 'development',
+    disableSpins: env === 'production',
+  })
 
-async function bootstrap() {
   const server = new Server()
 
-  server.start(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
+  server.start(port, async () => {
+    await whatsapp.initService()
+    logger.info(`Server is running on port ${port}`)
   })
 }
 
 ;(async (): Promise<void> => {
-  await bootstrap()
+  const PORT = Number(process.env.PORT)
+  const ENV = process.env.NODE_ENV as 'development' | 'production' | 'test'
+
+  await bootstrap({ env: ENV, port: PORT })
 })()
