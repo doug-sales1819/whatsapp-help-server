@@ -9,6 +9,6 @@ RUN npm -i -g pnpm && \
 COPY . .
 
 RUN pnpm install && \
-    pnpm run build
+    pnpm build
 
 ENTRYPOINT [ "pnpm", "start:prod" ]
